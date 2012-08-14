@@ -174,6 +174,9 @@ void setAllTo(int r, int g, int b) {
 
 
 int scale = 15;
+int ar = 0;
+int ag = 0;
+int ab = 0;
 
 void loop()
 {
@@ -188,9 +191,30 @@ void loop()
       Serial.print(' ');
     }
     Serial.print(spektrum[0]);
-    Serial.println("!");
+
     
-     setAllTo(spektrum[0]*scale, spektrum[2]*5*scale, spektrum[8]*10*scale);
+   int r = spektrum[0]+spektrum[1]+spektrum[2]+spektrum[3]+spektrum[4];
+   int g = spektrum[7]+spektrum[8]+spektrum[9]+spektrum[10]+spektrum[11];
+   int b = spektrum[15]+spektrum[16]+spektrum[17]+spektrum[18]+spektrum[19];
+   r = r*scale;
+   g = g*scale;
+   b = b*scale;
+   ar = (ar * 2 + r)/3;
+   ag = (ag * 2 + g)/3;
+   ab = (ab * 2 + b)/3;
+   Serial.print("||||||");
+   Serial.print(r);
+   Serial.print(",");
+   Serial.print(g);
+   Serial.print(",");
+   Serial.print(b);
+   Serial.print(",");
+   
+   Serial.println("!");
+   setAllTo(ar, ag, ab);
+   
+   
+   
    position = 0;
   }
 }
