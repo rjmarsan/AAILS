@@ -52,7 +52,7 @@ void setupLights() {
 
 
 void setupAudio() {
-  Serial.begin(57600);
+//  Serial.begin(57600);
   adcInit();
   adcCalb();
 }
@@ -177,6 +177,7 @@ int scale = 15;
 int ar = 0;
 int ag = 0;
 int ab = 0;
+int cr, cg, cb;
 
 void loop()
 {
@@ -186,12 +187,13 @@ void loop()
     fft_execute(bfly_buff);
     fft_output(bfly_buff, spektrum);
 
+/*
     for (byte i = 0; i < 64; i++){
       Serial.print(spektrum[i]);
       Serial.print(' ');
     }
     Serial.print(spektrum[0]);
-
+*/
     
    int r = spektrum[0]+spektrum[1]+spektrum[2]+spektrum[3]+spektrum[4];
    int g = spektrum[7]+spektrum[8]+spektrum[9]+spektrum[10]+spektrum[11];
@@ -199,19 +201,22 @@ void loop()
    r = r*scale;
    g = g*scale;
    b = b*scale;
-   ar = (ar * 2 + r)/3;
-   ag = (ag * 2 + g)/3;
-   ab = (ab * 2 + b)/3;
-   Serial.print("||||||");
-   Serial.print(r);
-   Serial.print(",");
-   Serial.print(g);
-   Serial.print(",");
-   Serial.print(b);
-   Serial.print(",");
+   ar = (ar * 3 + r)/4;
+   ag = (ag * 3 + g)/4;
+   ab = (ab * 3 + b)/4;
+//   Serial.print("||||||");
+//   Serial.print(r);
+//   Serial.print(",");
+//   Serial.print(g);
+//   Serial.print(",");
+//   Serial.print(b);
+//   Serial.print(",");
    
-   Serial.println("!");
-   setAllTo(ar, ag, ab);
+//   Serial.println("!");
+   cr = ar > 200 ? ar : 0;
+   cg = ag > 200 ? ag : 0;
+   cb = ab > 200 ? ab : 0;
+   setAllTo(cr, cb, cg);
    
    
    
