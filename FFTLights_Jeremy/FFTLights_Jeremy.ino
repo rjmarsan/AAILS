@@ -173,7 +173,10 @@ void setAllTo(int r, int g, int b) {
 
 
 
-int scale = 15;
+int scale = 10;
+int cutoff = 250;
+int smooth = 3;
+int maxval = 1023;
 int ar = 0;
 int ag = 0;
 int ab = 0;
@@ -202,14 +205,16 @@ void loop()
    g = g*scale;
    b = b*scale;
    
-   cr = r > 200 ? r : 0;
-   cg = g > 200 ? g : 0;
-   cb = b > 200 ? b : 0;
+   r = r > maxval ? maxval : r;
+   g = g > maxval ? maxval : g;
+   b = b > maxval ? maxval : b;
+   cr = r > cutoff ? r : 0;
+   cg = g > cutoff ? g : 0;
+   cb = b > cutoff ? b : 0;
    
-   int n = 3;
-   ar = (ar * n + cr)/(n+1);
-   ag = (ag * n + cg)/(n+1);
-   ab = (ab * n + cb)/(n+1);
+   ar = (ar * smooth + cr)/(smooth+1);
+   ag = (ag * smooth + cg)/(smooth+1);
+   ab = (ab * smooth + cb)/(smooth+1);
 //   Serial.print("||||||");
 //   Serial.print(r);
 //   Serial.print(",");
@@ -219,7 +224,7 @@ void loop()
 //   Serial.print(",");
    
 //   Serial.println("!");
-   setAllTo(ar, ab, ag);
+   setAllTo(ab, ar, ag);
    
    
    
